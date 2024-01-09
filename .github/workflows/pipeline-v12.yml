@@ -1,0 +1,180 @@
+name: Execução automação de testes
+
+on:
+  schedule:
+    - cron: '* 10 * * 1-5'
+  pull_request:
+    types: [synchronize,ready_for_review, review_requested, synchronize]
+    paths-ignore:
+      - '**.md'
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      teste:
+        description: 'Selecionar testes a serem executados: roteiro / test'
+        required: true
+        default: 'test'
+      browser:
+        description: 'Selecionar o browser: chrome / electron / firefox'
+        required: false
+        default: 'chrome'
+
+env:
+  DEFAULT_TESTE: "roteiro"
+  DEFAULT_BROWSER: "chrome"
+
+jobs:
+  test:
+    name: Cypress run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+
+      # # Etapa de criação das pastas
+      # - run: mkdir -p cypress/videos
+      # - run: mkdir -p cypress/screenshots
+      # - run: mkdir -p cypress/report
+
+      # # Configuração da permissão
+      # - run: chmod -R a+w cypress/videos
+      # - run: chmod -R a+w cypress/screenshots
+      # - run: chmod -R a+w cypress/report
+
+      # - name: Debug info
+      #   run: |
+      #     echo "PATH: $PATH"
+      #     echo "Node.js version: $(node --version)"
+      #     echo "npx version: $(npx --version)"
+
+      # - name: Cypress run 
+      #   uses: cypress-io/github-action@v2
+      #   with: 
+      #      command: npm run cypress:allure || exit 0
+      
+      #  run: npm run cypress:allure 
+        # command: npx cypress run --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
+      #  command: npm run ${{github.event.inputs.teste || env.DEFAULT_TESTE}} --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}}
+    
+      - name: Install Cypress
+        run: npm install cypress@12.14.0
+
+      - name: Install Allure reporter
+        run: npm install @shelex/cypress-allure-plugin
+
+      - name: Run Cypress tests with Allure reporting
+        run: npx cypress run --env allure=true --config video=false || exit 0
+      
+      - name: Get Allure History
+        uses: actions/checkout@v2
+        if: always()
+        with:
+          ref: gh-pages
+          path: gh-pages
+      
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+      
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          publish_dir: allure-history
+          keep_files: true
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
+
+      - name: Enviar notificação Slack - Sucesso
+        if: ${{ success() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://cdn-icons-png.flaticon.com/512/148/148767.png?size=48
+          SLACK_MESSAGE: 'Sucesso na execução de testes do PR :white_check_mark:'
+          SLACK_TITlE: 'Sucesso na execução de testes do PR :white_check_mark:'
+          SLACK_USERNAME: SUCESS0
+          MSG_MINIMAL: https://kelvinsilva1995.github.io/modelocypress/
+
+      - name: Enviar notificação Slack - Falha
+        if: ${{ failure() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://cdn.icon-icons.com/icons2/1378/PNG/512/dialogerror_92823.png?size=48
+          SLACK_MESSAGE: 'Falha na execução de testes do PR :fire:'
+          SLACK_TITlE: 'Falha na execução de testes do PR :fire:'
+          SLACK_USERNAME: FALHA
+          MSG_MINIMAL: https://kelvinsilva1995.github.io/modelocypress/
+
+
+# name: Execução automação de testes
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       amb:
+#         description: 'Selecionar algum destes ambientes: dev / hlg / prd'
+#         required: false
+#         default: 'hlg'
+#       browser:
+#         description: 'Selecionar algum destes browsers: chrome / electron'
+#         required: false
+#         default: 'chrome'
+#       tag:
+#         description: 'Selecionar alguma tag, por exemplo: @regressivo / @smoke / @login'
+#         required: false
+#         default: '@regressivo'
+#   pull_request:
+#     branches: [ master, release/develop ]
+#   schedule:
+#     - cron: "0 0 * * *"
+    
+# env:
+#   DEFAULT_AMB: "hlg"
+#   DEFAULT_BROWSER: "chrome"
+#   DEFAULT_TAG: "@regressivo"
+
+# jobs:
+#   test:
+#     name: Cypress run
+#     runs-on: ubuntu-latest
+#     container: cypress/browsers:node-18.16.0-chrome-114.0.5735.133-1-ff-114.0.2-edge-114.0.1823.51-1
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Cypress run 
+#         uses: cypress-io/github-action@v2
+#         with: 
+#           command: npx cypress run --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}} --env grepTags=${{github.event.inputs.tag || env.DEFAULT_TAG}}
+#           # command: npx cypress run --config-file config/${{github.event.inputs.amb || env.DEFAULT_AMB}}.json --browser ${{github.event.inputs.browser || env.DEFAULT_BROWSER}} --env grepTags=${{github.event.inputs.tag || env.DEFAULT_TAG}}
+#       - name: Generate Allure Report
+#         uses: simple-elf/allure-report-action@master
+#         if: always()
+#         with:
+#           allure_results: allure-results
+#           allure_history: allure-history
+#           keep_reports: 20
+#       - name: Deploy report to Github Pages
+#         if: always()
+#         uses: peaceiris/actions-gh-pages@v2
+#         env:
+#           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           PUBLISH_BRANCH: gh-pages
+#           PUBLISH_DIR: allure-history
