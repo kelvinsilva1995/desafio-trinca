@@ -6,7 +6,7 @@ import MethodsCriacaoConta from "../criacao-conta/methods";
 class acessar {
   clicarAcessar() {
     cy.wait(2)
-    // cy.get(elements.buttonAcessar).contains('Acessar').click()
+    cy.get(elements.buttonAcessar).contains('Acessar').click()
     cy.contains('Acessar conta')
   }
   cadastarNovoUsuario() {
