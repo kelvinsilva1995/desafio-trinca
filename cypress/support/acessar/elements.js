@@ -1,5 +1,5 @@
 export const elements = {
-    buttonAcessar: 'a[class="font-semibold duration-500 hover:bg-opacity-10 hover:bg-neutral-900 px-4 py-1 rounded-full"]',
+    buttonAcessar: '[href="/acesso"]',
     buttonCadastrar: 'a[class="font-semibold duration-500 hover:bg-opacity-10 hover:bg-neutral-900 px-4 py-1 rounded-full"]',
     email:'input[name="email"]',
     senha: 'input[name="password"]',
