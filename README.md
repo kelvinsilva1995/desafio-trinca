@@ -14,13 +14,14 @@ Deverá ser possível cadastrar uma nova conta com sucesso.
 Campo de cadastro deve ser obrigatório e exibir esta informação para o usuário.
 Não deve permitir cadastrar uma conta já existente.
 Deve ser possível logar na aplicação com uma conta cadastrada.
-
 Campo de login deve ser obrigatório e exibir esta informação para o usuário.
-
 A aplicação deve permitir cadastrar um novo Evento.
 Todos os campos do formulário de cadastro de eventos devem ser obrigatórios, com exeção do campo "Observações".
+
 Deve exibir um card no menu Eventos com os dados do evento cadastrado.
+
 Deve ser possível editar um evento cadastrado.
+
 Valores de evento devem corresponder à dados reais. Exemplo: R$: 100,00 ou R$ 150,50.
 
 
