@@ -34,6 +34,7 @@ module.exports = defineConfig({
       allureWriter(on, config);
       return config;
     },
+    
     env: {
       allureReuseAfterSpec: true,
       allure: true,
@@ -42,5 +43,6 @@ module.exports = defineConfig({
     specPattern: "cypress/e2e/features/*.feature",
     baseUrl: "https://trinca-app-bbq.vercel.app/",
     chromeWebSecurity: false,
+    experimentalRunAllSpecs: true,
   },
 });
