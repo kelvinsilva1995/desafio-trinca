@@ -14,12 +14,12 @@ Linguagem de fácil compreensão: É uma linguagem descritiva fácil de entender
 Abstração de detalhes técnicos: Abstrai os detalhes técnicos da implementação, permitindo que os cenários sejam escritos antes do desenvolvimento real começar. Isso promove a definição clara de requisitos e comportamentos antes da codificação.
 6. Allure Report: Framework de geração de relatórios para testes, proporcionando uma visualização mais amigável dos resultados.
 
-## Sugestões de Melhoria
+## Sugestões de Melhoria no Site
 1. Remover os dois logos da tela inicial.
 2. Hospedar o site em outro local, constantemente está dando erro 500: Internal Server Error.
 3. Adicionar novas páginas para confirmar as pessoas que vão participar.
 
-## Bugs Encontrados
+## Bugs Encontrados no Site
 1. Tela de login: quando não informa a senha, não aparece nenhuma mensagem no campo dizendo informar o campo obrigatório.
 2. Tela de cadastro: nos testes de campos obrigatórios ocorre o mesmo problema, mas para o e-mail. A mensagem usada é "Required field", poderia ser alterado para "campo obrigatório não informado".
 3. Tela de eventos: quando cadastro um evento, aparece a mensagem errada dizendo que o login foi efetuado com sucesso. O correto seria "evento criado com sucesso".
