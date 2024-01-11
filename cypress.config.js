@@ -37,7 +37,7 @@ module.exports = defineConfig({
     env: {
       allureReuseAfterSpec: true,
       allure: true,
-      allureResultsPath: "report/allure-report",
+      // allureResultsPath: "report/allure-report",
     },
     specPattern: "cypress/e2e/features/*.feature",
     baseUrl: "https://trinca-app-bbq.vercel.app/",
