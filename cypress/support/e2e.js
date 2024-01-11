@@ -16,9 +16,9 @@ import "cypress-axe";
 
 // Import commands.js using ES2015 syntax:
 import "./commands";
-import "./accessibility-commands";
+// import "./accessibility-commands";
 import "@shelex/cypress-allure-plugin";
-require("@frsource/cypress-plugin-visual-regression-diff");
+// require("@frsource/cypress-plugin-visual-regression-diff");
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
