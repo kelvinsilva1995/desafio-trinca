@@ -15,7 +15,7 @@ Abstração de detalhes técnicos: Abstrai os detalhes técnicos da implementaç
 6. Allure Report: Framework de geração de relatórios para testes, proporcionando uma visualização mais amigável dos resultados.
 
 ## Sugestões de Melhoria no Site
-1. Remover os dois logos da tela inicial.
+1. Remover um logo da tela inicial.
 2. Hospedar o site em outro local, constantemente está dando erro 500: Internal Server Error.
 3. Adicionar novas páginas para confirmar as pessoas que vão participar.
 
@@ -44,9 +44,8 @@ Abstração de detalhes técnicos: Abstrai os detalhes técnicos da implementaç
 ├── cypress  => 
 │   ├──  support   => 
 │   │   ├── step_definitions => Pasta com steps do gherkin
-│   │   │   ├── cadastro_geral => Pasta semelhante ao sistema colmeia
-│   │   │   │   ├── fornecedor  => Pasta semelhante ao sistema colmeia
-│   │   │   │   │   └── manter.feature => Arquivo do caso de teste
+│   │   │   ├── criar_conta => Pasta semelhante ao site
+
 
 ├── cypress  => 
 │   ├──  support   => 
